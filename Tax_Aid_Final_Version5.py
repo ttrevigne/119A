@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+# ----------------------------------------------------------------------
+# Name:     Tax-Aid Volunteer Form
+# Purpose:  Local database for volunteer information
+#
+# Date:     2/7/19
+# ----------------------------------------------------------------------
 """
 Created on Mon Dec  3 14:23:54 2018
 
@@ -15,7 +21,65 @@ import datetime
 import time
 
 
+class TaxAidGUI:
+    def __init__(self, master):
+        self.master = master
+        master.title("Tax-Aid Volunteer Sign-in")
 
+        self.f_lab = Label(master, text='First Name: ', font='none 12 bold')
+        #f_lab.place(x=70, y=0)
+        self.f_lab.pack()
+
+        self.ent_f_name = Entry(master, width=20, font='none 12 bold')
+        self.ent_f_name.place(x=160, y=0)
+
+        self.l_lab = Label(master, text='Last Name: ', font='none 12 bold')
+        #self.l_lab.place(x=70, y=40)
+        self.l_lab.pack()
+
+        self.ent_l_name = Entry(master, width=20, font='none 12 bold')
+        #self.ent_l_name.place(x=160, y=40)
+        self.ent_l_name.pack()
+
+        self.v_lab = Label(master, text='Volunteer Role: ',font='none 12 bold')
+        #v_lab.place(x=45, y=80)
+        self.v_lab.pack()
+
+        self.e_lab = Label(master, text='Email: ', font='none 12 bold')
+        #self.e_lab.place(x=100, y=120)
+        self.e_lab.pack()
+
+        self.ent_e = Entry(master, width=20, font='none 12 bold')
+        #self.ent_e.place(x=160, y=120)
+        self.ent_e.pack()
+
+        self.htext = Label(master, text='(Please enter valid email address)',
+                           font='none 11 bold')
+        #self.htext.place(x=20, y=150)
+        self.htext.pack()
+
+        self.e_lab = Label(master, text='Re-Enter-Email:', font='none 12 bold')
+        #self.e_lab.place(x=40, y=180)
+        self.e_lab.pack()
+
+        self.ent_e = Entry(master, width=20, font='none 12 bold',)
+        #self.ent_e.place(x=160, y=180)
+        self.ent_e.pack()
+
+        self.a_lab = Label(master, text='Employer/Affiliation:',
+                           font='none 12 bold')
+        #self.a_lab.place(x=12, y=220)
+        self.a_lab.pack()
+
+        self.ent_a_name = Entry(master, width=20, font='none 12 bold')
+        #self.ent_a_name.place(x=160, y=220)
+        self.ent_a_name.pack()
+
+root = Tk()
+tax_aid = TaxAidGUI(root)
+root.mainloop()
+
+"""
 root=Tk() #TO CREATE AND PASS WINDOW TO A FEW PARAMETERS
 root.geometry('400x450') #DEFINE WINDOW SIZE
 root.title('Welcome to Tax-Aid') #SIMPLE TITLE ON TOP
@@ -37,58 +101,15 @@ root.config(menu = menu)
 
 
 
-""" START OF THE LABEL INFORMATION AND DESIGN OF THE LAYOUT """
+layout
 
 
 
-f_lab =Label(root,text='First Name: ',font=('none 12 bold'))
-f_lab.place(x=70,y=0)
-
-ent_f_name = Entry(root, width=20, font=('none 12 bold'), textvar = txt_F_Name)
-ent_f_name.place(x=160, y=0)
 
 
 
-l_lab =Label(root,text='Last Name: ',font=('none 12 bold'))
-l_lab.place(x=70,y=40)
 
-ent_l_name = Entry(root, width = 20, font = ('none 12 bold'), textvar = txt_L_Name)
-ent_l_name.place(x = 160 , y = 40)
-
-
-
-v_lab =Label(root,text='Volunteer Role: ',font=('none 12 bold'))
-v_lab.place(x=45, y=80)
-
-
-
-e_lab =Label(root,text='Email: ',font=('none 12 bold'))
-e_lab.place(x=100, y=120)
-
-ent_e = Entry (root, width = 20, font = ('none 12 bold'), textvar = txt_Email)
-ent_e.place(x= 160, y = 120) 
-
-htext = Label(root,text='(Use permanent email address helps us stay in touch with you)',font=('none 11 bold'))
-htext.place(x=20,y=150)
-
-
-e_lab =Label(root,text='Re-Enter-Email: ',font=('none 12 bold'))
-e_lab.place(x=40, y=180)
-
-ent_e = Entry (root, width = 20, font = ('none 12 bold'), textvar =txt_Email_Two )
-ent_e.place(x= 160, y = 180)
-
-
-
-a_lab = Label(root, text='Employer/Affiliation:', font=('none 12 bold'))
-a_lab.place(x=12, y = 220)
-
-ent_a_name = Entry (root, width = 20, font = ('none 12 bold'), textvar = txt_Affiliation)
-ent_a_name.place(x= 160, y = 220)
-
-
-
-""" END OF LABEL INFORMATION AND DESIGN OF THE LAYOUT """
+ END OF LABEL INFORMATION AND DESIGN OF THE LAYOUT
 
 
 
@@ -199,6 +220,6 @@ btn_add.config(relief='raised')
 root.mainloop() #ALLOWS TO KEEP WINDOW !!DO NOT ERASE!!
 
 
-
+"""
 
 """END OF THE PROGRAM  """
