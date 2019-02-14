@@ -4,11 +4,7 @@
 #
 # Date:     2/7/19
 # ----------------------------------------------------------------------
-"""
-Created on Mon Dec  3 14:23:54 2018
 
-@author: TEAM 3
-"""
 from tkinter import *
 import sqlite3 as sq
 from tkinter import messagebox as msg
