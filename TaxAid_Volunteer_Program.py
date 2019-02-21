@@ -18,6 +18,13 @@ class TaxAidApp:
     Implements GUI & GUI functionality for the Tax-Aid sign-in program
     """
     root = Tk()  # Creates a window that is populated below
+    first_name = StringVar()  # HOLDS STRING FIRST NAME
+    last_name = StringVar()  # HOLDS STRING LAST NAME
+    email = StringVar()  # HOLDS STRING EMAIL
+    email_two = StringVar()  # HOLDS STRING EMAIL
+    affiliation = StringVar()  # HOLDS THE AFFILIATION
+    user_role = StringVar()  # HOLDS THE USER ROLE
+    chk_info = IntVar()
 
     def __init__(self, master):
         """
@@ -26,15 +33,7 @@ class TaxAidApp:
         :param master: (tkinter.Tk) tkinter object that initializes GUI
         """
 
-        first_name = StringVar()  # HOLDS STRING FIRST NAME
-        last_name = StringVar()  # HOLDS STRING LAST NAME
-        email = StringVar()  # HOLDS STRING EMAIL
-        email_two = StringVar()  # HOLDS STRING EMAIL
-        affiliation = StringVar()  # HOLDS THE AFFILIATION
-        user_role = StringVar()  # HOLDS THE USER ROLE
-        chk_info = IntVar()
-
-        self.master = master
+        master = master
         master.title("Tax-Aid Volunteer Sign-in")
 
         # Creates a label "First Name" & entry box for input
@@ -42,7 +41,7 @@ class TaxAidApp:
         # f_lab.place(x=70, y=0)
         self.f_lab.pack()
         self.ent_f_name = Entry(master, width=20, font='none 12 bold',
-                                textvariable=first_name)
+                                textvariable=TaxAidApp.first_name)
         self.ent_f_name.place(x=160, y=0)
 
         # Creates label "Last Name" & entry box for input
@@ -50,7 +49,7 @@ class TaxAidApp:
         # self.l_lab.place(x=70, y=40)
         self.l_lab.pack()
         self.ent_l_name = Entry(master, width=20, font='none 12 bold',
-                                textvariable=last_name)
+                                textvariable=TaxAidApp.last_name)
         # self.ent_l_name.place(x=160, y=40)
         self.ent_l_name.pack()
 
@@ -60,7 +59,7 @@ class TaxAidApp:
         # v_lab.place(x=45, y=80)
         self.v_lab.pack()
         self.user_role_box = ttk.Combobox(master, width=8,
-                                          textvar=user_role,
+                                          textvar=TaxAidApp.user_role,
                                           state='readonly')
         # self.user_age_box.grid(row=1, column=1)
         self.user_role_box['values'] = ['Greeter', 'Tax Preparer', 'Printer',
@@ -76,14 +75,14 @@ class TaxAidApp:
         # self.e_lab.place(x=100, y=120)
         self.e_lab.pack()
         self.ent_email = Entry(master, width=20, font='none 12 bold',
-                               textvariable=email)
+                               textvariable=TaxAidApp.email)
         # self.ent_e.place(x=160, y=120)
         self.ent_email.pack()
         self.e_lab = Label(master, text='Re-Enter-Email:', font='none 12 bold')
         # self.e_lab.place(x=40, y=180)
         self.e_lab.pack()
         self.ent_email = Entry(master, width=20, font='none 12 bold',
-                               textvariable=email_two)
+                               textvariable=TaxAidApp.email_two)
         # self.ent_e.place(x=160, y=180)
         self.ent_email.pack()
 
@@ -93,7 +92,7 @@ class TaxAidApp:
         self.a_lab.place(x=12, y=220)
         self.a_lab.pack()
         self.ent_affiliation = Entry(master, width=20, font='none 12 bold',
-                                     textvariable=affiliation)
+                                     textvariable=TaxAidApp.affiliation)
         # self.ent_a_name.place(x=160, y=220)
         self.ent_affiliation.pack()
 
@@ -119,7 +118,7 @@ class TaxAidApp:
         # Creates check box for waiver
         self.chk_btn = Checkbutton(master, text='''Tax-Aid Requires Volunteers 
                                    to Sign a waiver''', onvalue=1, offvalue=0,
-                                   variable=chk_info)
+                                   variable=TaxAidApp.chk_info)
         # chk_btn.place(x=40, y=310)
         self.chk_btn.pack()
 
@@ -241,5 +240,10 @@ point.execute('''CREATE TABLE IF NOT EXISTS volunteers(First_Name TEXT,
 db.commit()
 
 
-tax_aid = TaxAidApp(TaxAidApp.root)
-tax_aid.root.mainloop()
+def main():
+    tax_aid = TaxAidApp(TaxAidApp.root)
+    tax_aid.root.mainloop()
+
+
+if __name__ == '__main__':
+    main()
