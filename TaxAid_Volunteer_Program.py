@@ -11,6 +11,7 @@ from tkinter import messagebox as msg
 from tkinter import ttk
 import datetime 
 import time
+import string
 
 
 class TaxAidApp:
@@ -153,16 +154,38 @@ class TaxAidApp:
             TaxAidApp.chk_info.set(0)
 
     @staticmethod
+    def validate_name():
+        """
+
+        :return: None
+        """
+        alphabet = string.ascii_lowercase
+        for char in TaxAidApp.first_name.get().lower():
+            if char not in alphabet:
+                msg.showinfo("Name Requirements", '''Please only use characters
+                A-Z''')
+        for char in TaxAidApp.last_name.get().lower():
+            if char not in alphabet:
+                msg.showinfo("Name Requirements", '''Please only use characters
+                A-Z''')
+        return
+
+    @staticmethod
     def validate_email():
         """
         Verifies that the two emails entered are the same
         :return: None
         """
         if TaxAidApp.email.get() == TaxAidApp.email_two.get():
-            TaxAidApp.validate_check()
+            if "@" and "." not in TaxAidApp.email.get():
+                msg.showinfo("Email Requirements", "Please enter valid email")
+                return
+            else:
+                TaxAidApp.validate_check()
         else:
             msg.showinfo("Email Requirements",
                          "Please verify you entered the same email.")
+            return
 
     @staticmethod
     def validate_check():
