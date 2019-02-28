@@ -185,12 +185,12 @@ class TaxAidApp:
         Verifies that the two emails entered are the same
         :return: None
         """
+        if "@" and "." not in TaxAidApp.email.get():
+            msg.showinfo("Email Requirements", "Please enter valid email")
+            return
         if TaxAidApp.email.get() == TaxAidApp.email_two.get():
-            if "@" and "." not in TaxAidApp.email.get():
-                msg.showinfo("Email Requirements", "Please enter valid email")
-                return
-            else:
-                TaxAidApp.validate_check()
+            TaxAidApp.validate_check()
+            return
         else:
             msg.showinfo("Email Requirements",
                          "Please verify you entered the same email.")
