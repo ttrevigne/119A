@@ -4,13 +4,15 @@
 #
 # Date:     2/7/19
 # ----------------------------------------------------------------------
-#test-paul
+
 from tkinter import *
+from tkinter import PhotoImage
 import sqlite3 as sq
 from tkinter import messagebox as msg
 from tkinter import ttk
 import datetime 
 import time
+import string
 
 
 class TaxAidApp:
@@ -32,95 +34,103 @@ class TaxAidApp:
         attributes for the graphical user interface
         :param master: (tkinter.Tk) tkinter object that initializes GUI
         """
-
-        self.master = master
+        # Creates master window & defines size
+        master = master
         master.title("Tax-Aid Volunteer Sign-in")
+        w = TaxAidApp.root.winfo_screenwidth()
+        h = TaxAidApp.root.winfo_screenheight()
+        TaxAidApp.root.geometry("%dx%d+0+0" % (w, h))
+        TaxAidApp.root.resizable(False, False)
+        TaxAidApp.root.configure(background='white')
+
+        # Creates label containing Tax-Aid logo
+        image = PhotoImage(file="tax-aid-logo.gif")
+        self.logo = Label(image=image)
+        self.logo.image = image
+        self.logo.configure(background='white')
+        self.logo.pack(side=LEFT)
 
         # Creates a label "First Name" & entry box for input
-        self.f_lab = Label(master, text='First Name: ', font='none 12 bold')
-        # f_lab.place(x=70, y=0)
-        self.f_lab.pack()
+        self.f_lab = Label(master, text='First Name: ', font='none 12 bold',
+                           background='white')
+        self.f_lab.place(relx=0.43, rely=0.1, anchor=CENTER)
         self.ent_f_name = Entry(master, width=20, font='none 12 bold',
-                                textvariable=TaxAidApp.first_name)
-        self.ent_f_name.place(x=160, y=0)
+                                textvariable=TaxAidApp.first_name,
+                                background='gainsboro')
+        self.ent_f_name.place(relx=0.56, rely=0.1, anchor=CENTER)
 
         # Creates label "Last Name" & entry box for input
-        self.l_lab = Label(master, text='Last Name: ', font='none 12 bold')
-        # self.l_lab.place(x=70, y=40)
-        self.l_lab.pack()
+        self.l_lab = Label(master, text='Last Name: ', font='none 12 bold',
+                           background='white')
+        self.l_lab.place(relx=0.43, rely=0.2, anchor=CENTER)
         self.ent_l_name = Entry(master, width=20, font='none 12 bold',
-                                textvariable=TaxAidApp.last_name)
-        # self.ent_l_name.place(x=160, y=40)
-        self.ent_l_name.pack()
+                                textvariable=TaxAidApp.last_name,
+                                background='gainsboro')
+        self.ent_l_name.place(relx=0.56, rely=0.2, anchor=CENTER)
 
         # Creates label "Volunteer Role" & drop down menu with choices
         self.v_lab = Label(master, text='Volunteer Role: ',
-                           font='none 12 bold')
-        # v_lab.place(x=45, y=80)
-        self.v_lab.pack()
-        self.user_role_box = ttk.Combobox(master, width=8,
+                           font='none 12 bold', background='white')
+        self.v_lab.place(relx=0.43, rely=0.3, anchor=CENTER)
+        self.user_role_box = ttk.Combobox(master, width=15,
                                           textvar=TaxAidApp.user_role,
                                           state='readonly')
-        # self.user_age_box.grid(row=1, column=1)
         self.user_role_box['values'] = ['Greeter', 'Tax Preparer', 'Printer',
                                         'Interviewer', 'Site Manager',
                                         'Translator',
                                         'Tax Expert', 'Not Sure']
         self.user_role_box.current(0)
-        # self.user_age_box.place(x=160, y=80)
-        self.user_role_box.pack()
+        self.user_role_box.place(relx=0.56, rely=0.3, anchor=CENTER)
 
         # Creates label "Email" & entry box for email
-        self.e_lab = Label(master, text='Email: ', font='none 12 bold')
-        # self.e_lab.place(x=100, y=120)
-        self.e_lab.pack()
+        self.e_lab = Label(master, text='Email: ', font='none 12 bold',
+                           background='white')
+        self.e_lab.place(relx=0.43, rely=0.4, anchor=CENTER)
         self.ent_email = Entry(master, width=20, font='none 12 bold',
-                               textvariable=TaxAidApp.email)
-        # self.ent_e.place(x=160, y=120)
-        self.ent_email.pack()
-        self.e_lab = Label(master, text='Re-Enter-Email:', font='none 12 bold')
-        # self.e_lab.place(x=40, y=180)
-        self.e_lab.pack()
-        self.ent_email = Entry(master, width=20, font='none 12 bold',
-                               textvariable=TaxAidApp.email_two)
-        # self.ent_e.place(x=160, y=180)
-        self.ent_email.pack()
+                               textvariable=TaxAidApp.email,
+                               background='gainsboro')
+        self.ent_email.place(relx=0.56, rely=0.4, anchor=CENTER)
+        self.e_lab = Label(master, text='Re-Enter-Email:', font='none 12 bold',
+                           background='white')
+        self.e_lab.place(relx=0.43, rely=0.5, anchor=CENTER)
+        self.ent_email_two = Entry(master, width=20, font='none 12 bold',
+                                   textvariable=TaxAidApp.email_two,
+                                   background='gainsboro')
+        self.ent_email_two.place(relx=0.56, rely=0.5, anchor=CENTER)
 
         # Creates label "Employer/Affiliation" & entry box
         self.a_lab = Label(master, text='Employer/Affiliation:',
-                           font='none 12 bold')
-        self.a_lab.place(x=12, y=220)
-        self.a_lab.pack()
+                           font='none 12 bold', background='white')
+        self.a_lab.place(relx=0.43, rely=0.6, anchor=CENTER)
         self.ent_affiliation = Entry(master, width=20, font='none 12 bold',
-                                     textvariable=TaxAidApp.affiliation)
-        # self.ent_a_name.place(x=160, y=220)
-        self.ent_affiliation.pack()
+                                     textvariable=TaxAidApp.affiliation,
+                                     background='gainsboro')
+        self.ent_affiliation.place(relx=0.56, rely=0.6, anchor=CENTER)
 
-        # Creates "Submit" button
-        self.submit = Button(master, padx=5, pady=5, text='Submit',
-                             font='none 12 bold')
-        # self.btn_add.place(x=160, y=350)
-        self.submit.pack()
-        self.submit.config(relief='raised')
-
-        # Creates "Clear" button
-        self.clear = Button(master, padx=5, pady=5, text='Clear',
-                            font='none 12 bold')
-        self.clear.pack()
-        self.clear.config(relief='raised')
+        # Creates check box for waiver
+        self.chk_btn = Checkbutton(master, text='''Tax-Aid requires volunteers 
+                                          \nto sign a waiver''', onvalue=1,
+                                   offvalue=0, variable=TaxAidApp.chk_info,
+                                   background='white', font='non 10 bold')
+        self.chk_btn.place(relx=0.5, rely=0.7, anchor=CENTER)
 
         # Creates "Exit" button
         self.exit = Button(master, padx=5, pady=5, text='Exit',
                            font='none 12 bold')
-        self.exit.pack()
+        self.exit.place(relx=0.6, rely=0.8, anchor=CENTER)
         self.exit.config(relief='raised')
 
-        # Creates check box for waiver
-        self.chk_btn = Checkbutton(master, text='''Tax-Aid Requires Volunteers 
-                                   to Sign a waiver''', onvalue=1, offvalue=0,
-                                   variable=TaxAidApp.chk_info)
-        # chk_btn.place(x=40, y=310)
-        self.chk_btn.pack()
+        # Creates "Clear" button
+        self.clear = Button(master, padx=5, pady=5, text='Clear',
+                            font='none 12 bold')
+        self.clear.place(relx=0.5, rely=0.8, anchor=CENTER)
+        self.clear.config(relief='raised')
+
+        # Creates "Submit" button
+        self.submit = Button(master, padx=5, pady=5, text='Submit',
+                             font='none 12 bold')
+        self.submit.place(relx=0.4, rely=0.8, anchor=CENTER)
+        self.submit.config(relief='raised')
 
     @staticmethod
     def add():
@@ -153,16 +163,38 @@ class TaxAidApp:
             TaxAidApp.chk_info.set(0)
 
     @staticmethod
+    def validate_name():
+        """
+
+        :return: None
+        """
+        alphabet = string.ascii_lowercase
+        for char in TaxAidApp.first_name.get().lower():
+            if char not in alphabet:
+                msg.showinfo("Name Requirements", '''Please only use characters
+                A-Z''')
+        for char in TaxAidApp.last_name.get().lower():
+            if char not in alphabet:
+                msg.showinfo("Name Requirements", '''Please only use characters
+                A-Z''')
+        return
+
+    @staticmethod
     def validate_email():
         """
         Verifies that the two emails entered are the same
         :return: None
         """
         if TaxAidApp.email.get() == TaxAidApp.email_two.get():
-            TaxAidApp.validate_check()
+            if "@" and "." not in TaxAidApp.email.get():
+                msg.showinfo("Email Requirements", "Please enter valid email")
+                return
+            else:
+                TaxAidApp.validate_check()
         else:
             msg.showinfo("Email Requirements",
                          "Please verify you entered the same email.")
+            return
 
     @staticmethod
     def validate_check():
@@ -240,5 +272,10 @@ point.execute('''CREATE TABLE IF NOT EXISTS volunteers(First_Name TEXT,
 db.commit()
 
 
-tax_aid = TaxAidApp(TaxAidApp.root)
-tax_aid.root.mainloop()
+def main():
+    tax_aid = TaxAidApp(TaxAidApp.root)
+    tax_aid.root.mainloop()
+
+
+if __name__ == '__main__':
+    main()
