@@ -51,6 +51,11 @@ class TaxAidApp:
         self.logo.configure(background='white')
         self.logo.pack(side=LEFT)
 
+        # Creation of registration label
+        self.registration = Label(master, text='Registration',
+                                  font='none 12 bold', background='white')
+        self.registration.place(relx=0.51, rely=0.05, anchor=CENTER)
+
         # Creates a label "First Name" & entry box for input
         self.f_lab = Label(master, text='First Name: ', font='none 12 bold',
                            background='white')
@@ -134,6 +139,36 @@ class TaxAidApp:
                              command=self.complete_validation)
         self.submit.place(relx=0.4, rely=0.8, anchor=CENTER)
         self.submit.config(relief='raised')
+
+        # Creation of check-in label
+        self.checkin = Label(master, text='Check-In (Post Registration)',
+                             font='none 12 bold', background='white')
+        self.checkin.place(relx=0.8, rely=0.05, anchor=CENTER)
+
+        # Creates a label "First Name" & entry box for input (Check-in)
+        self.f_name = Label(master, text='First Name: ', font='none 12 bold',
+                            background='white')
+        self.f_name.place(relx=0.72, rely=0.1, anchor=CENTER)
+        self.ent_f_name = Entry(master, width=20, font='none 12 bold',
+                                textvariable=TaxAidApp.first_name,
+                                background='gainsboro')
+        self.ent_f_name.place(relx=0.85, rely=0.1, anchor=CENTER)
+
+        # Creates label "Last Name" & entry box for input (Check-in)
+        self.l_lab = Label(master, text='Last Name: ', font='none 12 bold',
+                           background='white')
+        self.l_lab.place(relx=0.72, rely=0.2, anchor=CENTER)
+        self.ent_l_name = Entry(master, width=20, font='none 12 bold',
+                                textvariable=TaxAidApp.last_name,
+                                background='gainsboro')
+        self.ent_l_name.place(relx=0.85, rely=0.2, anchor=CENTER)
+
+        # Creates "Check-In" button
+        self.check_in_button = Button(master, padx=5, pady=5, text='Check-In',
+                                      font='none 12 bold')
+        self.check_in_button.place(relx=0.8, rely=0.3, anchor=CENTER)
+        self.check_in_button.config(relief='raised')
+
 
     @staticmethod
     def add():
