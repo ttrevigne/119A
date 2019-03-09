@@ -10,15 +10,16 @@ from tkinter import PhotoImage
 import sqlite3 as sq
 from tkinter import messagebox as msg
 from tkinter import ttk
-import datetime 
+import datetime
 import time
 import string
 
 
-class TaxAidApp:
+class TaxAidApp(Frame):
     """
     Implements GUI & GUI functionality for the Tax-Aid sign-in program
     """
+
     root = Tk()  # Creates a window that is populated below
     first_name = StringVar()  # HOLDS STRING FIRST NAME
     last_name = StringVar()  # HOLDS STRING LAST NAME
@@ -26,7 +27,11 @@ class TaxAidApp:
     email_two = StringVar()  # HOLDS STRING EMAIL
     affiliation = StringVar()  # HOLDS THE AFFILIATION
     user_role = StringVar()  # HOLDS THE USER ROLE
+    password = StringVar()  # HOLDS STRING STAFF PASSWORD
+    staff_email = StringVar()  # HOLDS STRING STAFF EMAIL
     chk_info = IntVar()
+    DB = sq.connect('volunteers.db')
+
 
     def __init__(self, master):
         """
@@ -35,7 +40,7 @@ class TaxAidApp:
         :param master: (tkinter.Tk) tkinter object that initializes GUI
         """
         # Creates master window & defines size
-        master = master
+        self.master = master
         master.title("Tax-Aid Volunteer Sign-in")
         w = TaxAidApp.root.winfo_screenwidth()
         h = TaxAidApp.root.winfo_screenheight()
@@ -49,6 +54,16 @@ class TaxAidApp:
         self.logo.image = image
         self.logo.configure(background='white')
         self.logo.pack(side=LEFT)
+
+        # Creation of registration label
+        self.registration = Label(master, text='Registration',
+                                  font='none 12 bold', background='white')
+        self.registration.place(relx=0.51, rely=0.05, anchor=CENTER)
+
+        # Creation of registration label
+        self.registration = Label(master, text='Registration',
+                                  font='none 12 bold', background='white')
+        self.registration.place(relx=0.51, rely=0.05, anchor=CENTER)
 
         # Creates a label "First Name" & entry box for input
         self.f_lab = Label(master, text='First Name: ', font='none 12 bold',
@@ -116,21 +131,121 @@ class TaxAidApp:
 
         # Creates "Exit" button
         self.exit = Button(master, padx=5, pady=5, text='Exit',
-                           font='none 12 bold')
+                           font='none 12 bold', command=self.close)
         self.exit.place(relx=0.6, rely=0.8, anchor=CENTER)
         self.exit.config(relief='raised')
 
         # Creates "Clear" button
         self.clear = Button(master, padx=5, pady=5, text='Clear',
-                            font='none 12 bold')
+                            font='none 12 bold',
+                            command=self.clear)
         self.clear.place(relx=0.5, rely=0.8, anchor=CENTER)
         self.clear.config(relief='raised')
 
         # Creates "Submit" button
         self.submit = Button(master, padx=5, pady=5, text='Submit',
-                             font='none 12 bold')
+                             font='none 12 bold',
+                             command=self.complete_validation)
         self.submit.place(relx=0.4, rely=0.8, anchor=CENTER)
         self.submit.config(relief='raised')
+
+        # Creation of check-in label
+        self.checkin = Label(master, text='Check-In (Post Registration)',
+                             font='none 12 bold', background='white')
+        self.checkin.place(relx=0.8, rely=0.05, anchor=CENTER)
+
+        # Creates a label "First Name" & entry box for input (Check-in)
+        self.f_name = Label(master, text='First Name: ', font='none 12 bold',
+                            background='white')
+        self.f_name.place(relx=0.72, rely=0.1, anchor=CENTER)
+        self.ent_f_name = Entry(master, width=20, font='none 12 bold',
+                                textvariable=TaxAidApp.first_name,
+                                background='gainsboro')
+        self.ent_f_name.place(relx=0.85, rely=0.1, anchor=CENTER)
+
+        # Creates label "Last Name" & entry box for input (Check-in)
+        self.l_lab = Label(master, text='Last Name: ', font='none 12 bold',
+                           background='white')
+        self.l_lab.place(relx=0.72, rely=0.2, anchor=CENTER)
+        self.ent_l_name = Entry(master, width=20, font='none 12 bold',
+                                textvariable=TaxAidApp.last_name,
+                                background='gainsboro')
+        self.ent_l_name.place(relx=0.85, rely=0.2, anchor=CENTER)
+
+        # Creates "Check-In" button
+        self.check_in_button = Button(master, padx=5, pady=5, text='Check-In',
+                                      font='none 12 bold')
+        self.check_in_button.place(relx=0.8, rely=0.3, anchor=CENTER)
+        self.check_in_button.config(relief='raised')
+
+        # ROB Creates "Settings" button
+
+        self.settings = Button(master, padx=5, pady=5, text='Settings',
+                               command=self.__settings_menu__,
+                               font='none 12 bold')
+        self.settings.pack()
+        self.settings.place(relx=0.3, rely=0.8, anchor=CENTER)
+        self.settings.config(relief='raised')
+
+        # ROB opens settings menu on button event
+
+
+    def __settings_menu__(self):
+
+
+        self.top = Toplevel()
+        # this forces all focus on the top level until Toplevel is closed
+        self.top.grab_set()
+        self.display = Label(self.top, width=40, height=10, bg='WHITE')
+        self.title = Label(self.top, text="Staff Sign In", fg='BLACK',
+                       bg='DEEP SKY BLUE')
+        self.title.pack()
+        self.display.pack()
+
+        # ROB Creates email label and entry
+        self.staff_e_lab = Label(self.top, text='Password: ', font='none 12 bold',
+                                 background='white')
+        self.staff_e_lab.place(relx=0.1, rely=0.4, anchor=CENTER)
+        self.staff_ent_email = Entry(self.top, width=20, font='none 12 bold',
+                                     textvariable=TaxAidApp.staff_email,
+                                     background='gainsboro')
+        self.staff_ent_email.place(relx=0.56, rely=0.4, anchor=CENTER)
+
+        # Creates password label and entry
+        self.staff_pass_lab = Label(self.top, text='Email: ', font='none 12 bold',
+                                    background='white')
+        self.staff_pass_lab.place(relx=0.1, rely=0.2, anchor=CENTER)
+        self.staff_ent_pass = Entry(self.top, width=20, font='none 12 bold',
+                                    textvariable=TaxAidApp.password,
+                                    background='gainsboro')
+        self.staff_ent_pass.place(relx=0.56, rely=0.2, anchor=CENTER)
+
+        self.staff_login = Button(self.top, padx=5, pady=5, text='Login',
+                                  command=self.__staff_login__,
+                                  font='none 12 bold')
+        self.staff_login.pack()
+        self.staff_login.place(relx=0.3, rely=0.8, anchor=CENTER)
+        self.staff_login.config(relief='raised')
+
+        # ROB validates email and password for settings
+
+
+    def __staff_login__(self):
+        with DB:
+            while True:
+                cur = DB.cursor()
+                TaxAidApp.staff_email = TaxAidApp.staff_email.strip()
+                TaxAidApp.password = TaxAidApp.password.strip()
+
+                cur.execute(
+                    "SELECT COUNT (*) FROM Employee WHERE(Email = '" +
+                    TaxAidApp.staff_email + "' AND Password = '" +
+                    TaxAidApp.password + "') ")
+                results = cur.fetchone()
+                if results[0] == 1:
+                    continue
+                else:
+                    print("Login Failed")
 
     @staticmethod
     def add():
@@ -149,11 +264,12 @@ class TaxAidApp:
         with connect:
             point = connect.cursor()
             point.execute(
-                '''INSERT INTO people(First_Name,Last_Name, Volunteer, Email, 
-                Employer_Affiliation,Date) VALUES (?,?,?,?,?,?)''',
+                '''INSERT INTO volunteers(First_Name,Last_Name, Volunteer,
+                Email, Employer_Affiliation,Date) VALUES (?,?,?,?,?,?)''',
                 (first_name, last_name, role, email, affiliation,
                  time.strftime('%m-%d-%Y %I:%M:%S %p')))
-            db.close()
+            TaxAidApp.DB.commit()
+            TaxAidApp.DB.close()
             TaxAidApp.first_name.set('')
             TaxAidApp.last_name.set('')
             TaxAidApp.user_role.set('')
@@ -165,19 +281,21 @@ class TaxAidApp:
     @staticmethod
     def validate_name():
         """
-
-        :return: None
+        Validates that the name provided consists of only letters
+        :return: (Boolean) whether the input provided consists of only letters
         """
         alphabet = string.ascii_lowercase
         for char in TaxAidApp.first_name.get().lower():
             if char not in alphabet:
                 msg.showinfo("Name Requirements", '''Please only use characters
                 A-Z''')
+                return False
         for char in TaxAidApp.last_name.get().lower():
             if char not in alphabet:
                 msg.showinfo("Name Requirements", '''Please only use characters
                 A-Z''')
-        return
+                return False
+        return True
 
     @staticmethod
     def validate_email():
@@ -185,16 +303,21 @@ class TaxAidApp:
         Verifies that the two emails entered are the same
         :return: None
         """
-        if TaxAidApp.email.get() == TaxAidApp.email_two.get():
-            if "@" and "." not in TaxAidApp.email.get():
-                msg.showinfo("Email Requirements", "Please enter valid email")
-                return
-            else:
-                TaxAidApp.validate_check()
-        else:
-            msg.showinfo("Email Requirements",
-                         "Please verify you entered the same email.")
+        if "@" and "." not in TaxAidApp.email.get():
+            msg.showinfo("Email Requirements", "Please enter valid email")
             return
+        else:
+            if TaxAidApp.email.get() == TaxAidApp.email_two.get():
+                TaxAidApp.validate_check()
+            else:
+                msg.showinfo("Email Requirements",
+                             "Please verify you entered the same email.")
+                return
+
+    @staticmethod
+    def complete_validation():
+        if TaxAidApp.validate_name():
+            TaxAidApp.validate_email()
 
     @staticmethod
     def validate_check():
@@ -208,6 +331,26 @@ class TaxAidApp:
             msg.showinfo("Alert from Tax-Aid",
                          '''Please accept the terms and conditions to 
                          continue.''')
+
+    @staticmethod
+    def close():
+        """
+        Function that closes the root window and stops the program
+        :return: None
+        """
+        TaxAidApp.root.destroy()
+
+    def clear(self):
+        """
+        Clears all fields and boxes with exception of the combobox
+        :return: None
+        """
+        self.ent_f_name.delete(0, END)
+        self.ent_l_name.delete(0, END)
+        self.ent_email.delete(0, END)
+        self.ent_email_two.delete(0, END)
+        self.ent_affiliation.delete(0, END)
+        TaxAidApp.chk_info.set(0)
 
     @staticmethod
     def show_msg():
@@ -262,14 +405,6 @@ class TaxAidApp:
                          manager for next steps.''')
         else:
             return
-
-
-db = sq.connect('volunteers.db')
-point = db.cursor()
-point.execute('''CREATE TABLE IF NOT EXISTS volunteers(First_Name TEXT, 
-             Last_Name TEXT, Volunteer TEXT, Email TEXT, 
-             Employer_Affiliation TEXT, Date TEXT)''')
-db.commit()
 
 
 def main():
