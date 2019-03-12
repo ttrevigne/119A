@@ -15,7 +15,7 @@ import time
 import string
 
 
-class TaxAidApp(Frame):
+class TaxAidApp():
     """
     Implements GUI & GUI functionality for the Tax-Aid sign-in program
     """
@@ -181,16 +181,14 @@ class TaxAidApp(Frame):
         # ROB Creates "Settings" button
 
         self.settings = Button(master, padx=5, pady=5, text='Settings',
-                               command=self.__settings_menu__,
+                               command=self.__settings_login__,
                                font='none 12 bold')
         self.settings.pack()
         self.settings.place(relx=0.3, rely=0.8, anchor=CENTER)
         self.settings.config(relief='raised')
 
-        # ROB opens settings menu on button event
-
-
-    def __settings_menu__(self):
+    # ROB opens settings st on button event
+    def __settings_login__(self):
 
 
         self.top = Toplevel()
@@ -198,7 +196,7 @@ class TaxAidApp(Frame):
         self.top.grab_set()
         self.display = Label(self.top, width=40, height=10, bg='WHITE')
         self.title = Label(self.top, text="Staff Sign In", fg='BLACK',
-                       bg='DEEP SKY BLUE')
+                           bg='DEEP SKY BLUE')
         self.title.pack()
         self.display.pack()
 
@@ -221,18 +219,17 @@ class TaxAidApp(Frame):
         self.staff_ent_pass.place(relx=0.56, rely=0.2, anchor=CENTER)
 
         self.staff_login = Button(self.top, padx=5, pady=5, text='Login',
-                                  command=self.__staff_login__,
+                                  command=self.__settings_menu__,
                                   font='none 12 bold')
         self.staff_login.pack()
         self.staff_login.place(relx=0.3, rely=0.8, anchor=CENTER)
         self.staff_login.config(relief='raised')
 
-        # ROB validates email and password for settings
 
-
-    def __staff_login__(self):
+    # ROB validates email and password for settings
+    def __staff_validate__(self):
         with DB:
-            while True:
+            while True: #loginTest = false
                 cur = DB.cursor()
                 TaxAidApp.staff_email = TaxAidApp.staff_email.strip()
                 TaxAidApp.password = TaxAidApp.password.strip()
@@ -242,10 +239,32 @@ class TaxAidApp(Frame):
                     TaxAidApp.staff_email + "' AND Password = '" +
                     TaxAidApp.password + "') ")
                 results = cur.fetchone()
-                if results[0] == 1:
-                    continue
+                if results[0] == 1: #logintest = True
+                    self.__settings_menu__
                 else:
                     print("Login Failed")
+
+    # ROB Creates settings menu window, needs widgets, dropdowns
+    def __settings_menu__(self):
+        self.settings_window = Toplevel()
+        self.settings_window.grab_set()
+        self.settings_display = Label(self.settings_window, width=40,
+                                      height=10, bg='WHITE')
+
+        self.settings_title = Label(self.settings_window, text="SETTINGS MENU",
+                                    fg='BLACK', bg='DEEP SKY BLUE')
+
+        self.settings_title.pack()
+        self.settings_display.pack()
+
+        #Exit button to return to main menu
+        self.settings_exit = Button(self.settings_window, padx=5, pady=5,
+                                    text='Exit', command=main(self),
+                                    font='none 12 bold')
+        self.settings_exit.pack()
+        self.settings_exit.place(relx=0.3, rely=0.8, anchor=CENTER)
+        self.settings_exit.config(relief='raised')
+
 
     @staticmethod
     def add():
