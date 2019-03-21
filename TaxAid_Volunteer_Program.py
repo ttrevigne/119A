@@ -265,6 +265,7 @@ class TaxAidApp():
         self.settings_exit.place(relx=0.3, rely=0.8, anchor=CENTER)
         self.settings_exit.config(relief='raised')
 
+    #ROB 3_21 code
     def __close_window__(self):
         self.settings_window.destroy()
         self.login_top.destroy()
