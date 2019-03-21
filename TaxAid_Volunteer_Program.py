@@ -191,34 +191,34 @@ class TaxAidApp():
     def __settings_login__(self):
 
 
-        self.top = Toplevel()
+        self.login_top = Toplevel()
         # this forces all focus on the top level until Toplevel is closed
-        self.top.grab_set()
-        self.display = Label(self.top, width=40, height=10, bg='WHITE')
-        self.title = Label(self.top, text="Staff Sign In", fg='BLACK',
+        self.login_top.grab_set()
+        self.display = Label(self.login_top, width=40, height=10, bg='WHITE')
+        self.title = Label(self.login_top, text="Staff Sign In", fg='BLACK',
                            bg='DEEP SKY BLUE')
         self.title.pack()
         self.display.pack()
 
         # ROB Creates email label and entry
-        self.staff_e_lab = Label(self.top, text='Password: ', font='none 12 bold',
+        self.staff_e_lab = Label(self.login_top, text='Password: ', font='none 12 bold',
                                  background='white')
         self.staff_e_lab.place(relx=0.1, rely=0.4, anchor=CENTER)
-        self.staff_ent_email = Entry(self.top, width=20, font='none 12 bold',
+        self.staff_ent_email = Entry(self.login_top, width=20, font='none 12 bold',
                                      textvariable=TaxAidApp.staff_email,
                                      background='gainsboro')
         self.staff_ent_email.place(relx=0.56, rely=0.4, anchor=CENTER)
 
         # Creates password label and entry
-        self.staff_pass_lab = Label(self.top, text='Email: ', font='none 12 bold',
+        self.staff_pass_lab = Label(self.login_top, text='Email: ', font='none 12 bold',
                                     background='white')
         self.staff_pass_lab.place(relx=0.1, rely=0.2, anchor=CENTER)
-        self.staff_ent_pass = Entry(self.top, width=20, font='none 12 bold',
+        self.staff_ent_pass = Entry(self.login_top, width=20, font='none 12 bold',
                                     textvariable=TaxAidApp.password,
                                     background='gainsboro')
         self.staff_ent_pass.place(relx=0.56, rely=0.2, anchor=CENTER)
 
-        self.staff_login = Button(self.top, padx=5, pady=5, text='Login',
+        self.staff_login = Button(self.login_top, padx=5, pady=5, text='Login',
                                   command=self.__settings_menu__,
                                   font='none 12 bold')
         self.staff_login.pack()
@@ -251,7 +251,7 @@ class TaxAidApp():
         self.settings_display = Label(self.settings_window, width=40,
                                       height=10, bg='WHITE')
 
-        self.settings_title = Label(self.settings_window, text="SETTINGS MENU",
+        self.settings_title = Label(self.settings_window, text="Settings Menu",
                                     fg='BLACK', bg='DEEP SKY BLUE')
 
         self.settings_title.pack()
@@ -259,12 +259,15 @@ class TaxAidApp():
 
         #Exit button to return to main menu
         self.settings_exit = Button(self.settings_window, padx=5, pady=5,
-                                    text='Exit', command=main(self),
+                                    text='Exit', command=self.__close_window__,
                                     font='none 12 bold')
         self.settings_exit.pack()
         self.settings_exit.place(relx=0.3, rely=0.8, anchor=CENTER)
         self.settings_exit.config(relief='raised')
 
+    def __close_window__(self):
+        self.settings_window.destroy()
+        self.login_top.destroy()
 
     @staticmethod
     def add():
