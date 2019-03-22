@@ -169,7 +169,6 @@ class TaxAidApp:
         self.check_in_button.place(relx=0.8, rely=0.3, anchor=CENTER)
         self.check_in_button.config(relief='raised')
 
-
     @staticmethod
     def add():
         """
@@ -207,6 +206,9 @@ class TaxAidApp:
         Validates that the name provided consists of only letters
         :return: (Boolean) whether the input provided consists of only letters
         """
+        if not TaxAidApp.first_name.get() or not TaxAidApp.last_name.get():
+            msg.showinfo("Name Requirements", "Please enter name")
+            return False
         alphabet = string.ascii_lowercase
         for char in TaxAidApp.first_name.get().lower():
             if char not in alphabet:
