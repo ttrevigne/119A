@@ -13,7 +13,7 @@ from tkinter import ttk
 import datetime
 import time
 import string
-
+import getpass
 
 class TaxAidApp():
     """
@@ -29,6 +29,7 @@ class TaxAidApp():
     user_role = StringVar()  # HOLDS THE USER ROLE
     password = StringVar()  # HOLDS STRING STAFF PASSWORD
     staff_email = StringVar()  # HOLDS STRING STAFF EMAIL
+    location = StringVar()  # HOLDS LOCATION STRING
     chk_info = IntVar()
     DB = sq.connect('volunteers.db')
 
@@ -187,7 +188,7 @@ class TaxAidApp():
         self.settings.place(relx=0.3, rely=0.8, anchor=CENTER)
         self.settings.config(relief='raised')
 
-    # ROB opens settings st on button event
+    # ROB opens settings on button event
     def __settings_login__(self):
 
 
@@ -227,7 +228,7 @@ class TaxAidApp():
 
 
     # ROB validates email and password for settings
-    def __staff_validate__(self):
+    def __staff_validate1__(self):
         with DB:
             while True: #loginTest = false
                 cur = DB.cursor()
@@ -244,7 +245,19 @@ class TaxAidApp():
                 else:
                     print("Login Failed")
 
-    # ROB Creates settings menu window, needs widgets, dropdowns
+    #ROB uses getpass to validate staff
+    def __staff_validate2__(self):
+        staff_email = getpass.getuser()
+
+        password = getpass.getpass(prompt='password')
+
+        if password.lower() == 'defaultpass':
+            self.__settings_menu__
+        else:
+            print('Wrong Email or Password')
+
+
+            # ROB Creates settings menu window, needs widgets, dropdowns
     def __settings_menu__(self):
         self.settings_window = Toplevel()
         self.settings_window.grab_set()
@@ -257,6 +270,20 @@ class TaxAidApp():
         self.settings_title.pack()
         self.settings_display.pack()
 
+
+
+        #ROB Dropdown to pick locations
+        self.location_lab = Label(self.settings_window, text='Location: ',
+                           font='none 12 bold', background='white')
+        self.location_lab.place(relx=0.13, rely=0.3, anchor=CENTER)
+        self.location_box = ttk.Combobox(self.settings_window, width=15,
+                                          textvar=TaxAidApp.location,
+                                          state='readonly')
+        self.location_box['values'] = ['MLK Library (San Jose)', 'Location 2',
+                                       'location 3', 'location 4','location 5']
+        self.location_box.current(0)
+        self.location_box.place(relx=0.56, rely=0.3, anchor=CENTER)
+
         #Exit button to return to main menu
         self.settings_exit = Button(self.settings_window, padx=5, pady=5,
                                     text='Exit', command=self.__close_window__,
@@ -265,7 +292,7 @@ class TaxAidApp():
         self.settings_exit.place(relx=0.3, rely=0.8, anchor=CENTER)
         self.settings_exit.config(relief='raised')
 
-    #ROB 3_21 code
+    # ROB 3/21
     def __close_window__(self):
         self.settings_window.destroy()
         self.login_top.destroy()
