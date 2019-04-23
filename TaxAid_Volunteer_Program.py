@@ -28,7 +28,6 @@ class TaxAidApp:
     user_role = StringVar()  # HOLDS THE USER ROLE
     chk_info = IntVar()
     DB = sq.connect('volunteers.db')
-    names = []
 
     def __init__(self, master):
         """
@@ -141,12 +140,6 @@ class TaxAidApp:
         self.submit.place(relx=0.4, rely=0.8, anchor=CENTER)
         self.submit.config(relief='raised')
 
-        # Creates Volunteer List button
-        self.volunteer_bttn = Button(master, padx=5, pady=5, text='Volunteer \
-        List', font='none 12 bold', command=self.volunteer_list)
-        self.volunteer_bttn.place(relx=0.8, rely=0.3, anchor=CENTER)
-        self.volunteer_bttn.config(relief='raised')
-
     @staticmethod
     def add():
         """
@@ -158,8 +151,6 @@ class TaxAidApp:
         role = TaxAidApp.user_role.get()
         email = TaxAidApp.email.get()
         affiliation = TaxAidApp.affiliation.get()
-        whole_name = first_name + " " + last_name
-        TaxAidApp.names.append(whole_name)
 
         datetime.datetime.now()
         connect = sq.connect('volunteers.db')
@@ -171,6 +162,7 @@ class TaxAidApp:
                 (first_name, last_name, role, email, affiliation,
                  time.strftime('%m-%d-%Y %I:%M:%S %p')))
             TaxAidApp.DB.commit()
+            TaxAidApp.DB.close()
             TaxAidApp.first_name.set('')
             TaxAidApp.last_name.set('')
             TaxAidApp.user_role.set('')
@@ -219,13 +211,6 @@ class TaxAidApp:
                 return
 
     @staticmethod
-    def volunteer_list():
-        msg_names = ""
-        for name in TaxAidApp.names:
-            msg_names += name + "\n"
-        msg.showinfo("Volunteer", msg_names)
-
-    @staticmethod
     def complete_validation():
         if TaxAidApp.validate_name():
             TaxAidApp.validate_email()
@@ -249,7 +234,6 @@ class TaxAidApp:
         Function that closes the root window and stops the program
         :return: None
         """
-        TaxAidApp.DB.close()
         TaxAidApp.root.destroy()
 
     def clear(self):
