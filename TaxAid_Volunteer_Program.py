@@ -27,6 +27,8 @@ class TaxAidApp:
     affiliation = StringVar()  # HOLDS THE AFFILIATION
     user_role = StringVar()  # HOLDS THE USER ROLE
     chk_info = IntVar()
+    password = StringVar()  # HOLDS STRING STAFF PASSWORD
+    staff_email = StringVar()  # HOLDS STRING STAFF EMAIL
     DB = sq.connect('volunteers.db')
     names = []
 
