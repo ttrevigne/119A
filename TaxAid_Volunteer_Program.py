@@ -147,6 +147,15 @@ class TaxAidApp:
         self.volunteer_bttn.place(relx=0.8, rely=0.3, anchor=CENTER)
         self.volunteer_bttn.config(relief='raised')
 
+        # ROB Creates "Settings" button
+
+        self.settings = Button(master, padx=5, pady=5, text='Settings',
+                               command=self.settings_login,
+                               font='none 12 bold')
+        self.settings.pack()
+        self.settings.place(relx=0.3, rely=0.8, anchor=CENTER)
+        self.settings.config(relief='raised')
+
     def settings_login(self):
         self.top = Toplevel()
         # this forces all focus on the top level until Toplevel is closed
