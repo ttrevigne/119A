@@ -32,7 +32,6 @@ class TaxAidApp(Frame):
     chk_info = IntVar()
     DB = sq.connect('volunteers.db')
 
-
     def __init__(self, master):
         """
         Function that initializes a TaxAid object that contains the
@@ -123,8 +122,8 @@ class TaxAidApp(Frame):
         self.ent_affiliation.place(relx=0.56, rely=0.6, anchor=CENTER)
 
         # Creates check box for waiver
-        self.chk_btn = Checkbutton(master, text='''Tax-Aid requires volunteers 
-                                          \nto sign a waiver''', onvalue=1,
+        self.chk_btn = Checkbutton(master, text='Tax-Aid requires volunteers \
+        to sign a waiver', onvalue=1,
                                    offvalue=0, variable=TaxAidApp.chk_info,
                                    background='white', font='non 10 bold')
         self.chk_btn.place(relx=0.5, rely=0.7, anchor=CENTER)
@@ -181,7 +180,7 @@ class TaxAidApp(Frame):
         # ROB Creates "Settings" button
 
         self.settings = Button(master, padx=5, pady=5, text='Settings',
-                               command=self.__settings_menu__,
+                               command=self.settings_login,
                                font='none 12 bold')
         self.settings.pack()
         self.settings.place(relx=0.3, rely=0.8, anchor=CENTER)
@@ -189,63 +188,64 @@ class TaxAidApp(Frame):
 
         # ROB opens settings menu on button event
 
-
-    def __settings_menu__(self):
-
-
+    def settings_login(self):
         self.top = Toplevel()
         # this forces all focus on the top level until Toplevel is closed
         self.top.grab_set()
-        self.display = Label(self.top, width=40, height=10, bg='WHITE')
+        self.display = Label(self.top, width=40)
         self.title = Label(self.top, text="Staff Sign In", fg='BLACK',
                        bg='DEEP SKY BLUE')
         self.title.pack()
         self.display.pack()
 
         # ROB Creates email label and entry
-        self.staff_e_lab = Label(self.top, text='Password: ', font='none 12 bold',
+        self.staff_e_lab = Label(self.top, text='Email: ', font='none 12 bold',
                                  background='white')
-        self.staff_e_lab.place(relx=0.1, rely=0.4, anchor=CENTER)
+        self.staff_e_lab.pack()
         self.staff_ent_email = Entry(self.top, width=20, font='none 12 bold',
                                      textvariable=TaxAidApp.staff_email,
                                      background='gainsboro')
-        self.staff_ent_email.place(relx=0.56, rely=0.4, anchor=CENTER)
+        self.staff_ent_email.pack()
 
         # Creates password label and entry
-        self.staff_pass_lab = Label(self.top, text='Email: ', font='none 12 bold',
+        self.staff_pass_lab = Label(self.top, text='Password: ',
+                                    font='none 12 bold',
                                     background='white')
-        self.staff_pass_lab.place(relx=0.1, rely=0.2, anchor=CENTER)
+        self.staff_pass_lab.pack()
         self.staff_ent_pass = Entry(self.top, width=20, font='none 12 bold',
                                     textvariable=TaxAidApp.password,
                                     background='gainsboro')
-        self.staff_ent_pass.place(relx=0.56, rely=0.2, anchor=CENTER)
+        self.staff_ent_pass.pack()
 
         self.staff_login = Button(self.top, padx=5, pady=5, text='Login',
-                                  command=self.__staff_login__,
+                                  command=self.staff_login,
                                   font='none 12 bold')
         self.staff_login.pack()
-        self.staff_login.place(relx=0.3, rely=0.8, anchor=CENTER)
+        #self.staff_login.place(relx=0.3, rely=0.8, anchor=CENTER)
         self.staff_login.config(relief='raised')
 
-        # ROB validates email and password for settings
+    def staff_menu(self):
+        self.top = Toplevel(TaxAidApp.root)
+        # this forces all focus on the top level until Toplevel is closed
+        self.top.grab_set()
+        self.display = Label(self.top, width=40, height=10, bg='WHITE')
+        self.title = Label(self.top, text="Admin Settings", fg='BLACK',
+                           bg='DEEP SKY BLUE')
+        self.title.pack()
+        self.display.pack()
 
-
-    def __staff_login__(self):
-        with DB:
-            while True:
-                cur = DB.cursor()
-                TaxAidApp.staff_email = TaxAidApp.staff_email.strip()
-                TaxAidApp.password = TaxAidApp.password.strip()
-
-                cur.execute(
-                    "SELECT COUNT (*) FROM Employee WHERE(Email = '" +
-                    TaxAidApp.staff_email + "' AND Password = '" +
-                    TaxAidApp.password + "') ")
-                results = cur.fetchone()
-                if results[0] == 1:
-                    continue
-                else:
-                    print("Login Failed")
+    def staff_login(self):
+        if TaxAidApp.staff_email.get() == "jill@tax-aid.org" or \
+                TaxAidApp.staff_email.get() == "minnie@tax-aid.org":
+            if TaxAidApp.password.get() == "admin":
+                self.staff_ent_email.delete(0, END)
+                self.staff_ent_pass.delete(0, END)
+                self.top.destroy()
+                TaxAidApp.staff_menu(self)
+            else:
+                msg.showinfo("Login Failure", "Invalid Password")
+        else:
+            msg.showinfo("Login Failure", "Invalid Email")
 
     @staticmethod
     def add():
@@ -351,6 +351,10 @@ class TaxAidApp(Frame):
         self.ent_email_two.delete(0, END)
         self.ent_affiliation.delete(0, END)
         TaxAidApp.chk_info.set(0)
+
+    def admin_clear(self):
+        self.staff_ent_email.delete(0, END)
+        self.staff_ent_pass.delete(0, END)
 
     @staticmethod
     def show_msg():
