@@ -147,6 +147,42 @@ class TaxAidApp:
         self.volunteer_bttn.place(relx=0.8, rely=0.3, anchor=CENTER)
         self.volunteer_bttn.config(relief='raised')
 
+    def settings_login(self):
+        self.top = Toplevel()
+        # this forces all focus on the top level until Toplevel is closed
+        self.top.grab_set()
+        self.display = Label(self.top, width=40)
+        self.title = Label(self.top, text="Staff Sign In", fg='BLACK',
+                       bg='DEEP SKY BLUE')
+        self.title.pack()
+        self.display.pack()
+
+        # ROB Creates email label and entry
+        self.staff_e_lab = Label(self.top, text='Email: ', font='none 12 bold',
+                                 background='white')
+        self.staff_e_lab.pack()
+        self.staff_ent_email = Entry(self.top, width=20, font='none 12 bold',
+                                     textvariable=TaxAidApp.staff_email,
+                                     background='gainsboro')
+        self.staff_ent_email.pack()
+
+        # Creates password label and entry
+        self.staff_pass_lab = Label(self.top, text='Password: ',
+                                    font='none 12 bold',
+                                    background='white')
+        self.staff_pass_lab.pack()
+        self.staff_ent_pass = Entry(self.top, width=20, font='none 12 bold',
+                                    textvariable=TaxAidApp.password,
+                                    background='gainsboro')
+        self.staff_ent_pass.pack()
+
+        self.staff_login = Button(self.top, padx=5, pady=5, text='Login',
+                                  command=self.staff_login,
+                                  font='none 12 bold')
+        self.staff_login.pack()
+        #self.staff_login.place(relx=0.3, rely=0.8, anchor=CENTER)
+        self.staff_login.config(relief='raised')
+
     def staff_menu(self):
         self.top = Toplevel(TaxAidApp.root)
         # this forces all focus on the top level until Toplevel is closed
