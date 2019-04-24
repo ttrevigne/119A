@@ -147,6 +147,29 @@ class TaxAidApp:
         self.volunteer_bttn.place(relx=0.8, rely=0.3, anchor=CENTER)
         self.volunteer_bttn.config(relief='raised')
 
+    def staff_menu(self):
+        self.top = Toplevel(TaxAidApp.root)
+        # this forces all focus on the top level until Toplevel is closed
+        self.top.grab_set()
+        self.display = Label(self.top, width=40, height=10, bg='WHITE')
+        self.title = Label(self.top, text="Admin Settings", fg='BLACK',
+                           bg='DEEP SKY BLUE')
+        self.title.pack()
+        self.display.pack()
+
+    def staff_login(self):
+        if TaxAidApp.staff_email.get() == "jill@tax-aid.org" or \
+                TaxAidApp.staff_email.get() == "minnie@tax-aid.org":
+            if TaxAidApp.password.get() == "admin":
+                self.staff_ent_email.delete(0, END)
+                self.staff_ent_pass.delete(0, END)
+                self.top.destroy()
+                TaxAidApp.staff_menu(self)
+            else:
+                msg.showinfo("Login Failure", "Invalid Password")
+        else:
+            msg.showinfo("Login Failure", "Invalid Email")
+
     @staticmethod
     def add():
         """
