@@ -26,6 +26,15 @@ class TaxAidApp:
     email_two = StringVar()  # HOLDS STRING EMAIL
     affiliation = StringVar()  # HOLDS THE AFFILIATION
     user_role = StringVar()  # HOLDS THE USER ROLE
+    location = StringVar()   # HOLDS INPUT CHOSEN FOR TAX SITE LOCATION
+    location1 = StringVar()   # HOLDS THE TAX SITE LOCATION 1 (ADMIN)
+    location2 = StringVar()  # HOLDS THE TAX SITE LOCATION 2 (ADMIN)
+    location3 = StringVar()  # HOLDS THE TAX SITE LOCATION 3 (ADMIN)
+    location4 = StringVar()  # HOLDS THE TAX SITE LOCATION 4 (ADMIN)
+    location5 = StringVar()  # HOLDS THE TAX SITE LOCATION 5 (ADMIN)
+    location6 = StringVar()  # HOLDS THE TAX SITE LOCATION 6 (ADMIN)
+    location7 = StringVar()  # HOLDS THE TAX SITE LOCATION 7 (ADMIN)
+    location8 = StringVar()  # HOLDS THE TAX SITE LOCATION 8 (ADMIN)
     chk_info = IntVar()
     password = StringVar()  # HOLDS STRING STAFF PASSWORD
     staff_email = StringVar()  # HOLDS STRING STAFF EMAIL
@@ -90,6 +99,20 @@ class TaxAidApp:
                                         'Tax Expert', 'Not Sure']
         self.user_role_box.current(0)
         self.user_role_box.place(relx=0.56, rely=0.3, anchor=CENTER)
+
+        # Creates label "Location" & drop down menu with choices
+        self.loc_lab = Label(master, text='Location: ',
+                           font='none 12 bold', background='white')
+        self.loc_lab.place(relx=0.43, rely=0.35, anchor=CENTER)
+        self.location_box = ttk.Combobox(master, width=15,
+                                         textvar=TaxAidApp.location,
+                                         state='readonly')
+        self.location_box['values'] = ['Location 1', 'Location 2',
+                                       'Location 3', 'Location 4',
+                                       'Location 5', 'Location 6',
+                                       'Location 7', 'Location 8']
+        self.location_box.current(0)
+        self.location_box.place(relx=0.56, rely=0.35, anchor=CENTER)
 
         # Creates label "Email" & entry box for email
         self.e_lab = Label(master, text='Email: ', font='none 12 bold',
@@ -159,7 +182,7 @@ class TaxAidApp:
         self.settings.config(relief='raised')
 
     def settings_login(self):
-        self.top = Toplevel()
+        self.top = Toplevel(TaxAidApp.root)
         # this forces all focus on the top level until Toplevel is closed
         self.top.grab_set()
         self.display = Label(self.top, width=40)
@@ -191,18 +214,96 @@ class TaxAidApp:
                                   command=self.staff_login,
                                   font='none 12 bold')
         self.staff_login.pack()
-        #self.staff_login.place(relx=0.3, rely=0.8, anchor=CENTER)
         self.staff_login.config(relief='raised')
 
     def staff_menu(self):
         self.top = Toplevel(TaxAidApp.root)
         # this forces all focus on the top level until Toplevel is closed
         self.top.grab_set()
-        self.display = Label(self.top, width=40, height=10, bg='WHITE')
+        self.display = Label(self.top, width=40)
         self.title = Label(self.top, text="Admin Settings", fg='BLACK',
                            bg='DEEP SKY BLUE')
         self.title.pack()
         self.display.pack()
+        self.loc1 = Label(self.top, text='Location 1: ',
+                          font='none 12 bold', background='white')
+        self.loc1.pack()
+        self.staff_loc_ent1 = Entry(self.top, width=20, font='none 12 bold',
+                                    textvariable=TaxAidApp.location1,
+                                    background='gainsboro')
+        self.staff_loc_ent1.pack()
+        self.loc2 = Label(self.top, text='Location 2: ',
+                          font='none 12 bold', background='white')
+        self.loc2.pack()
+        self.staff_loc_ent2 = Entry(self.top, width=20, font='none 12 bold',
+                                    textvariable=TaxAidApp.location2,
+                                    background='gainsboro')
+        self.staff_loc_ent2.pack()
+        self.loc3 = Label(self.top, text='Location 3: ',
+                          font='none 12 bold', background='white')
+        self.loc3.pack()
+        self.staff_loc_ent3 = Entry(self.top, width=20, font='none 12 bold',
+                                        textvariable=TaxAidApp.location3,
+                                        background='gainsboro')
+        self.staff_loc_ent3.pack()
+        self.loc4 = Label(self.top, text='Location 4: ',
+                              font='none 12 bold', background='white')
+        self.loc4.pack()
+        self.staff_loc_ent4 = Entry(self.top, width=20, font='none 12 bold',
+                                        textvariable=TaxAidApp.location4,
+                                        background='gainsboro')
+        self.staff_loc_ent4.pack()
+        self.loc5 = Label(self.top, text='Location 5: ',
+                              font='none 12 bold', background='white')
+        self.loc5.pack()
+        self.staff_loc_ent5 = Entry(self.top, width=20, font='none 12 bold',
+                                        textvariable=TaxAidApp.location5,
+                                        background='gainsboro')
+        self.staff_loc_ent5.pack()
+        self.loc6 = Label(self.top, text='Location 6: ',
+                              font='none 12 bold', background='white')
+        self.loc6.pack()
+        self.staff_loc_ent6 = Entry(self.top, width=20, font='none 12 bold',
+                                        textvariable=TaxAidApp.location6,
+                                        background='gainsboro')
+        self.staff_loc_ent6.pack()
+        self.loc7 = Label(self.top, text='Location 7: ',
+                              font='none 12 bold', background='white')
+        self.loc7.pack()
+        self.staff_loc_ent7 = Entry(self.top, width=20, font='none 12 bold',
+                                        textvariable=TaxAidApp.location7,
+                                        background='gainsboro')
+        self.staff_loc_ent7.pack()
+        self.loc8 = Label(self.top, text='Location 8: ',
+                              font='none 12 bold', background='white')
+        self.loc8.pack()
+        self.staff_loc_ent8 = Entry(self.top, width=20, font='none 12 bold',
+                                        textvariable=TaxAidApp.location8,
+                                        background='gainsboro')
+        self.staff_loc_ent8.pack()
+        self.save = Button(self.top, padx=5, pady=5,
+                               text='Save Changes',
+                               command=self.save,
+                               font='none 12 bold')
+        self.save.pack()
+        self.close = Button(self.top, padx=5, pady=5,
+                           text='Exit',
+                           command=self.top.destroy,
+                           font='none 12 bold')
+        self.save.pack()
+
+    def quit(self):
+        self.top.quit()
+
+    def save(self):
+        self.location_box.config(values=[TaxAidApp.location1.get(),
+                                         TaxAidApp.location2.get(),
+                                         TaxAidApp.location3.get(),
+                                         TaxAidApp.location4.get(),
+                                         TaxAidApp.location5.get(),
+                                         TaxAidApp.location6.get(),
+                                         TaxAidApp.location7.get(),
+                                         TaxAidApp.location8.get()])
 
     def staff_login(self):
         if TaxAidApp.staff_email.get() == "jill@tax-aid.org" or \
