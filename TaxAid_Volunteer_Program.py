@@ -422,8 +422,10 @@ class TaxAidApp:
         Function that closes the root window and stops the program
         :return: None
         """
-        TaxAidApp.DB.close()
-        TaxAidApp.root.destroy()
+        if msg.askquestion("Exit Application", "Are you sure you want to exit?\n"
+                           " All locations will be reset.") == "yes":
+            TaxAidApp.DB.close()
+            TaxAidApp.root.destroy()
 
     def clear(self):
         """
