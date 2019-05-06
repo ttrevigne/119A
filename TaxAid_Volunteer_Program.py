@@ -1,7 +1,7 @@
 # ----------------------------------------------------------------------
-# Name:     Tax-Aid Volunteer Form (Generation 2)
+# Name:     Tax-Aid Volunteer Registration (Generation 2)
 # Purpose:  Local database for volunteer information
-#
+# Authors (Spring 19): Trent T., Kevin J., Paul F., Robert W. Ahdi A.
 # Date:     2/7/19
 # ----------------------------------------------------------------------
 
@@ -15,12 +15,17 @@ import time
 import string
 import csv
 import textwrap
+import os
 
 
 class TaxAidApp:
     """
     Implements GUI & GUI functionality for the Tax-Aid sign-in program
     """
+    # Not all of the following variables should be class level variables.
+    # To future groups editing, please try to reformat
+    # this code to fit pep 8 and other pep guidelines
+
     root = Tk()  # Creates a window that is populated below
     first_name = StringVar()  # HOLDS STRING FIRST NAME
     last_name = StringVar()  # HOLDS STRING LAST NAME
@@ -37,11 +42,11 @@ class TaxAidApp:
     location6 = StringVar()  # HOLDS THE TAX SITE LOCATION 6 (ADMIN)
     location7 = StringVar()  # HOLDS THE TAX SITE LOCATION 7 (ADMIN)
     location8 = StringVar()  # HOLDS THE TAX SITE LOCATION 8 (ADMIN)
-    chk_info = IntVar()
+    chk_info = IntVar()      # HOLDS EITHER 0 OR 1 FOR CHECKBOX (WAIVER)
     password = StringVar()  # HOLDS STRING STAFF PASSWORD
     staff_email = StringVar()  # HOLDS STRING STAFF EMAIL
-    DB = sq.connect('volunteers.db')
-    names = []
+    DB = sq.connect('volunteers.db') # CONNECTS THE DB
+    names = [] # HOLDS THE NAMES FOR ATTENDANCE
     waiver = """
             I understand that as serving as a volunteer for Tax-Aid, a 501c3
             nonprofit public charity, I am an important and designated 
@@ -219,7 +224,7 @@ class TaxAidApp:
 
     def settings_login(self):
         """
-        Creates the staff login page
+        Function that creates a new window and populates the staff login page
         :return: None
         """
         self.top = Toplevel(TaxAidApp.root)
@@ -258,9 +263,11 @@ class TaxAidApp:
 
     def staff_menu(self):
         """
-        Creates the staff settings page
+        Function that creates new window and populates the staff settings page
         :return: None
         """
+        # The code used for the settings page is not best practice.
+        # If editing (future groups), please edit syntax of the following code.
         self.top = Toplevel(TaxAidApp.root)
         # this forces all focus on the top level until Toplevel is closed
         self.top.grab_set()
@@ -287,48 +294,48 @@ class TaxAidApp:
                           font='none 12 bold', background='white')
         self.loc3.pack()
         self.staff_loc_ent3 = Entry(self.top, width=20, font='none 12 bold',
-                                        textvariable=TaxAidApp.location3,
-                                        background='gainsboro')
+                                    textvariable=TaxAidApp.location3,
+                                    background='gainsboro')
         self.staff_loc_ent3.pack()
         self.loc4 = Label(self.top, text='Location 4: ',
-                              font='none 12 bold', background='white')
+                          font='none 12 bold', background='white')
         self.loc4.pack()
         self.staff_loc_ent4 = Entry(self.top, width=20, font='none 12 bold',
-                                        textvariable=TaxAidApp.location4,
-                                        background='gainsboro')
+                                    textvariable=TaxAidApp.location4,
+                                    background='gainsboro')
         self.staff_loc_ent4.pack()
         self.loc5 = Label(self.top, text='Location 5: ',
-                              font='none 12 bold', background='white')
+                          font='none 12 bold', background='white')
         self.loc5.pack()
         self.staff_loc_ent5 = Entry(self.top, width=20, font='none 12 bold',
-                                        textvariable=TaxAidApp.location5,
-                                        background='gainsboro')
+                                    textvariable=TaxAidApp.location5,
+                                    background='gainsboro')
         self.staff_loc_ent5.pack()
         self.loc6 = Label(self.top, text='Location 6: ',
-                              font='none 12 bold', background='white')
+                          font='none 12 bold', background='white')
         self.loc6.pack()
         self.staff_loc_ent6 = Entry(self.top, width=20, font='none 12 bold',
-                                        textvariable=TaxAidApp.location6,
-                                        background='gainsboro')
+                                    textvariable=TaxAidApp.location6,
+                                    background='gainsboro')
         self.staff_loc_ent6.pack()
         self.loc7 = Label(self.top, text='Location 7: ',
-                              font='none 12 bold', background='white')
+                          font='none 12 bold', background='white')
         self.loc7.pack()
         self.staff_loc_ent7 = Entry(self.top, width=20, font='none 12 bold',
-                                        textvariable=TaxAidApp.location7,
-                                        background='gainsboro')
+                                    textvariable=TaxAidApp.location7,
+                                    background='gainsboro')
         self.staff_loc_ent7.pack()
         self.loc8 = Label(self.top, text='Location 8: ',
-                              font='none 12 bold', background='white')
+                          font='none 12 bold', background='white')
         self.loc8.pack()
         self.staff_loc_ent8 = Entry(self.top, width=20, font='none 12 bold',
-                                        textvariable=TaxAidApp.location8,
-                                        background='gainsboro')
+                                    textvariable=TaxAidApp.location8,
+                                    background='gainsboro')
         self.staff_loc_ent8.pack()
         self.save = Button(self.top, padx=5, pady=5,
-                               text='Save Changes',
-                               command=self.save,
-                               font='none 12 bold')
+                           text='Save Changes',
+                           command=self.save,
+                           font='none 12 bold')
         self.save.pack()
         self.close = Button(self.top, padx=5, pady=5,
                            text='Exit',
@@ -513,7 +520,8 @@ class TaxAidApp:
         cur = connect.cursor()
         cur.execute("SELECT * FROM volunteers")
         data = cur.fetchall()
-        with open('volunteers.csv', 'w') as file:
+        with open(os.path.join(os.path.expanduser('~'), 'Desktop',
+                               'volunteers.csv'), 'w') as file:
             writer = csv.writer(file)
             writer.writerow(['First Name', 'Last Name', 'Role', 'Email',
                              'Affiliation', 'Date'])
