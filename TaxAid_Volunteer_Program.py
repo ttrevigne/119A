@@ -14,6 +14,7 @@ import datetime
 import time
 import string
 import csv
+import textwrap
 
 
 class TaxAidApp:
@@ -41,6 +42,32 @@ class TaxAidApp:
     staff_email = StringVar()  # HOLDS STRING STAFF EMAIL
     DB = sq.connect('volunteers.db')
     names = []
+    waiver = """
+            I understand that as serving as a volunteer for Tax-Aid, a 501c3
+            nonprofit public charity, I am an important and designated 
+            representative of Tax-Aid, and I agree to work with Tax-Aid in
+            achieving its mission. I agree to perform my volunteer duties
+            professionally and in accordance with this Agreement and the
+            guidelines as set out in the Volunteer Handbook and Reference
+            Manual. The full contents and text of the Handbook is available on
+            the Tax-Aid web site, www.tax-aid.org/tax-volunteers.\nI 
+            understand that during the course serving as a volunteer,
+            confidential information may be made available to me. I understand
+            that confidential information must not be released outside the
+            Tax-Aid organization. I understand that I only share confidential
+            information inside the Tax-Aid organization when it is relevant to
+            the preparation of a tax return for a Tax-Aid client. I will not
+            knowingly prepare a false return. I will not solicit business from
+            taxpayers or use knowledge gained from Tax-Aid for any direct or
+            indirect purposes.\nI will not engage in criminal, infamous,
+            dishonest, notoriously disgraceful conduct or any conduct deemed to
+            have a negative effect on Tax-Aid. I will treat all taxpayers in a
+            professional, courteous and respectful manner.\nI hereby release
+            Tax-Aid, its officers, directors, employees, and agents from any
+            claims, lawsuits, or actions I, my heirs, or legal representatives
+            may have for any personal injury and/or property damage I may incur
+            as a result of my volunteer services.
+            """
 
     def __init__(self, master):
         """
@@ -168,8 +195,9 @@ class TaxAidApp:
         self.submit.config(relief='raised')
 
         # Creates Volunteer List button
-        self.volunteer_bttn = Button(master, padx=5, pady=5, text='Volunteer \
-        List', font='none 12 bold', command=self.volunteer_list)
+        self.volunteer_bttn = Button(master, padx=5, pady=5, text='Attendance',
+                                     font='none 12 bold',
+                                     command=self.volunteer_list)
         self.volunteer_bttn.place(relx=0.8, rely=0.3, anchor=CENTER)
         self.volunteer_bttn.config(relief='raised')
 
@@ -497,42 +525,10 @@ class TaxAidApp:
         Function that displays Tax-Aid terms & conditions/Thank you message
         :return: None
         """
-        answer = msg.askquestion("Tax-Aid", "I understand that as serving as a\
-                                volunteer for Tax-Aid, a 501c3 nonprofit\
-                                public charity, I am an important and\
-                                designated representative of Tax-Aid, and I\
-                                agree to work with Tax-Aid in achieving its\
-                                mission. I agree to perform my volunteer\
-                                duties professionally and in accordance with\
-                                this Agreement and the guidelines as set out\
-                                in the Volunteer Handbook and Reference\
-                                Handbook is available on the Tax-Aid web site,\
-                                 www.tax-aid.org/tax-volunteers.\n\n I \
-                                 understand that during the course serving as\
-                                 a volunteer, confidential information may be\
-                                 made available to me. I understand that\
-                                 confidential information must not be released\
-                                  outside the Tax-Aid organization. I\
-                                  understand that I only share confidential\
-                                  information inside the Tax-Aid organization\
-                                  when it is relevant to the preparation of a\
-                                  tax return for a Tax-Aid client. I will not\
-                                  knowingly prepare a false return. I will\
-                                  not solicit business from taxpayers or use\
-                                  knowledge gained from Tax-Aid for any\
-                                  direct or indirect purposes.\n\nI will not\
-                                  engage in criminal, infamous, dishonest,\
-                                  notoriously disgraceful conduct or any\
-                                  conduct deemed to have a negative effect\
-                                  on Tax-Aid. I will treat all taxpayers in a\
-                                  professional, courteous and respectful\
-                                  manner\n\nI hereby release Tax-Aid, its\
-                                  officers, directors, employees, and agents\
-                                  from any claims, lawsuits, or actions I, my\
-                                  heirs, or legal representatives may have\
-                                  for any personal injury and/or property\
-                                  damage I may incur as a result of my\
-                                  volunteer services.")
+        formatted_text = textwrap.dedent(TaxAidApp.waiver).strip()
+        extra_formatting = textwrap.fill(formatted_text, initial_indent='',
+                                         subsequent_indent='')
+        answer = msg.askquestion("Tax-Aid", extra_formatting)
         if answer == 'yes':
             TaxAidApp.add()
             msg.showinfo("Thank You and Welcome",
