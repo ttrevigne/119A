@@ -13,6 +13,7 @@ from tkinter import ttk
 import datetime
 import time
 import string
+import csv
 
 
 class TaxAidApp:
@@ -181,7 +182,18 @@ class TaxAidApp:
         self.settings.place(relx=0.3, rely=0.8, anchor=CENTER)
         self.settings.config(relief='raised')
 
+        # Creates Export button
+        self.volunteer_bttn = Button(master, padx=5, pady=5, text='Export',
+                                     font='none 12 bold',
+                                     command=self.export)
+        self.volunteer_bttn.place(relx=0.8, rely=0.4, anchor=CENTER)
+        self.volunteer_bttn.config(relief='raised')
+
     def settings_login(self):
+        """
+        Creates the staff login page
+        :return: None
+        """
         self.top = Toplevel(TaxAidApp.root)
         # this forces all focus on the top level until Toplevel is closed
         self.top.grab_set()
@@ -217,6 +229,10 @@ class TaxAidApp:
         self.staff_login.config(relief='raised')
 
     def staff_menu(self):
+        """
+        Creates the staff settings page
+        :return: None
+        """
         self.top = Toplevel(TaxAidApp.root)
         # this forces all focus on the top level until Toplevel is closed
         self.top.grab_set()
@@ -293,9 +309,17 @@ class TaxAidApp:
         self.save.pack()
 
     def quit(self):
+        """
+        Closes the admin login page
+        :return: None
+        """
         self.top.quit()
 
     def save(self):
+        """
+        Saves the information entered on the admin settings page
+        :return: None
+        """
         self.location_box.config(values=[TaxAidApp.location1.get(),
                                          TaxAidApp.location2.get(),
                                          TaxAidApp.location3.get(),
@@ -306,6 +330,10 @@ class TaxAidApp:
                                          TaxAidApp.location8.get()])
 
     def staff_login(self):
+        """
+        Verifies that the entered email and password are correct
+        :return: None
+        """
         if TaxAidApp.staff_email.get() == "jill@tax-aid.org" or \
                 TaxAidApp.staff_email.get() == "minnie@tax-aid.org":
             if TaxAidApp.password.get() == "admin":
@@ -391,6 +419,10 @@ class TaxAidApp:
 
     @staticmethod
     def volunteer_list():
+        """
+        Displays the names of the volunteers that have signed in on current day
+        :return: None
+        """
         msg_names = ""
         now = datetime.datetime.now()
         for name in TaxAidApp.names:
@@ -400,6 +432,10 @@ class TaxAidApp:
 
     @staticmethod
     def complete_validation():
+        """
+        Method that validates both name and email entry
+        :return: None
+        """
         if TaxAidApp.validate_name():
             TaxAidApp.validate_email()
 
@@ -438,6 +474,22 @@ class TaxAidApp:
         self.ent_email_two.delete(0, END)
         self.ent_affiliation.delete(0, END)
         TaxAidApp.chk_info.set(0)
+
+    @staticmethod
+    def export():
+        """
+        Takes volunteers.db and compiles entries into formatted CSV file
+        :return: None
+        """
+        connect = sq.connect('volunteers.db')
+        cur = connect.cursor()
+        cur.execute("SELECT * FROM volunteers")
+        data = cur.fetchall()
+        with open('volunteers.csv', 'w') as file:
+            writer = csv.writer(file)
+            writer.writerow(['First Name', 'Last Name', 'Role', 'Email',
+                             'Affiliation', 'Date'])
+            writer.writerows(data)
 
     @staticmethod
     def show_msg():
