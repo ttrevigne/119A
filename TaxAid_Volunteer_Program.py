@@ -376,9 +376,8 @@ class TaxAidApp:
         Verifies that the entered email and password are correct
         :return: None
         """
-        if TaxAidApp.staff_email.get() == "jill@tax-aid.org" or \
-                TaxAidApp.staff_email.get() == "minnie@tax-aid.org":
-            if TaxAidApp.password.get() == "admin":
+        if TaxAidApp.staff_email.get() == "taxaid.volunteer.signin@gmail.com":
+            if TaxAidApp.password.get() == "TaxAid2019":
                 self.staff_ent_email.delete(0, END)
                 self.staff_ent_pass.delete(0, END)
                 self.top.destroy()
