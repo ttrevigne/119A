@@ -1,0 +1,19 @@
+First Name,Last Name,Role,Email,Affiliation,Date
+test,test,Greeter,test@gmail.com,test,03-06-2019 11:59:17 PM
+test,test,Greeter,test@gmail.com,test,03-07-2019 12:09:10 AM
+Test,Test,Greeter,test2@gmail.com,test2,03-07-2019 12:31:43 AM
+,,Greeter,none@none.com,,03-21-2019 11:07:09 AM
+,,Greeter,none@none.com,,03-21-2019 11:14:05 AM
+,,Greeter,none@none.com,,03-21-2019 11:16:31 AM
+,,Greeter,none@none.com,,03-21-2019 11:24:26 AM
+test,test,Greeter,test@test.com,test,04-22-2019 07:21:51 PM
+test,test,Greeter,test@test.com,test,04-22-2019 07:23:05 PM
+test,test,Greeter,test@test.com,test,04-22-2019 07:25:09 PM
+test,test,Greeter,test@test.com,test,04-22-2019 09:06:12 PM
+test,test,Greeter,test@test.com,test,04-22-2019 09:06:40 PM
+Trent,Trevigne,Greeter,test@test.com,Blestek,04-22-2019 11:10:11 PM
+Kevin,James,Greeter,test@test.com,test,04-22-2019 11:10:29 PM
+Robert,Wolfgang,Tax Preparer,test@test.com,test,04-22-2019 11:11:12 PM
+Paul,Fox,Greeter,test@test.com,test,04-22-2019 11:11:34 PM
+Trenton,Trevigne,Greeter,test@test.com,test,05-05-2019 07:16:36 PM
+Trent,Trevigne,Printer,test@test.com,test,05-05-2019 07:58:51 PM

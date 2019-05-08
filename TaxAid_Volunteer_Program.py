@@ -15,6 +15,8 @@ import time
 import string
 import csv
 import textwrap
+from pydrive.auth import GoogleAuth
+from pydrive.drive import GoogleDrive
 import os
 
 
@@ -341,7 +343,12 @@ class TaxAidApp:
                            text='Exit',
                            command=self.top.destroy,
                            font='none 12 bold')
-        self.save.pack()
+        self.close.pack()
+        self.upload = Button(self.top, padx=5, pady=5,
+                           text='Upload Volunteer Data',
+                           command=self.internet_msg,
+                           font='none 12 bold')
+        self.upload.pack()
 
     def quit(self):
         """
@@ -544,6 +551,37 @@ class TaxAidApp:
                          manager for next steps.''')
         else:
             return
+
+    @staticmethod
+    def drive_upload():
+        """
+        Function that authorizes a user's entered google account and uploads
+        a copy of the Volunteer.CSV to their drive
+        :return: None
+        """
+        g_login = GoogleAuth()
+        g_login.LocalWebserverAuth()
+        drive = GoogleDrive(g_login)
+        with open("volunteers.csv", "r") as file:
+            file_drive = drive.CreateFile(
+                {'volunteer.csv': os.path.basename(file.name)})
+            file_drive.SetContentString(file.read())
+            file_drive.Upload()
+
+    @staticmethod
+    def internet_msg():
+        """
+        Function that asks user if they are connected to the internet
+        :return: None
+        """
+        prompt = """
+                 Please ensure you are connected to the internet.
+                 Do you have the authorized Tax-Aid google account login?
+                 """
+        answer = msg.askquestion("File Upload", prompt)
+        if answer == 'yes':
+            TaxAidApp.drive_upload()
+
 
 
 def main():
