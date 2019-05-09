@@ -390,7 +390,8 @@ class TaxAidApp:
     @staticmethod
     def add():
         """
-        Adds the information given by the volunteer to the database
+        Adds the information given by the volunteer to the database and creates
+        an updated CSV file in the working directory for upload at a later time
         :return: None
         """
         first_name = TaxAidApp.first_name.get()
@@ -405,6 +406,9 @@ class TaxAidApp:
         connect = sq.connect('volunteers.db')
         with connect:
             point = connect.cursor()
+            point.execute("""CREATE TABLE IF NOT EXISTS volunteers(First_Name
+             TEXT,Last_Name TEXT, Volunteer TEXT, Email TEXT,
+             Employer_Affiliation TEXT, Date TEXT)""")
             point.execute(
                 '''INSERT INTO volunteers(First_Name,Last_Name, Volunteer,
                 Email, Employer_Affiliation,Date) VALUES (?,?,?,?,?,?)''',
@@ -519,7 +523,8 @@ class TaxAidApp:
     @staticmethod
     def export():
         """
-        Takes volunteers.db and compiles entries into formatted CSV file
+        Takes volunteers.db and compiles entries into formatted CSV file on the
+        desktop
         :return: None
         """
         connect = sq.connect('volunteers.db')
@@ -558,6 +563,15 @@ class TaxAidApp:
         a copy of the Volunteer.CSV to their drive
         :return: None
         """
+        connect = sq.connect('volunteers.db')
+        cur = connect.cursor()
+        cur.execute("SELECT * FROM volunteers")
+        data = cur.fetchall()
+        with open('volunteers.csv', 'w') as file:
+            writer = csv.writer(file)
+            writer.writerow(['First Name', 'Last Name', 'Role', 'Email',
+                             'Affiliation', 'Date'])
+            writer.writerows(data)
         g_login = GoogleAuth()
         g_login.LocalWebserverAuth()
         drive = GoogleDrive(g_login)
