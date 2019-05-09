@@ -1,10 +1,18 @@
 # ----------------------------------------------------------------------
 # Name:     Tax-Aid Volunteer Registration (Generation 2)
-# Purpose:  Local database for volunteer information
+# Purpose:  Local database for volunteer info/Google Drive integration
 # Authors (Spring 19): Trent T., Kevin J., Paul F., Robert W. Ahdi A.
 # Date:     2/7/19
 # ----------------------------------------------------------------------
+"""
+This program is designed to serve as a registration form for volunteers
+in which they can provide there information to Tax-Aid.
 
+The program takes user input and stores it in a SQL database using SQLite3.
+There is integration with Google Drive where that the db file can be extracted
+into a .CSV file and uploaded to the designated Tax-Aid gmail account. Please
+refer to Jill for the login credentials.
+"""
 from tkinter import *
 from tkinter import PhotoImage
 import sqlite3 as sq
@@ -22,7 +30,33 @@ import os
 
 class TaxAidApp:
     """
-    Implements GUI & GUI functionality for the Tax-Aid sign-in program
+    Class that represents an instance of the registration form.
+    Argument:
+    None
+
+    Attributes:
+    registration (label): Label of the form at the top of the GUI
+    logo (PhotoImage): The Tax-Aid logo
+    f_lab (label): first name label
+    ent_f_name (entry): entry field for the first name
+    l_lab (label): last name label
+    ent_l_name (entry): entry field for the last name
+    v_lab (label): label for the volunteer role
+    user_role_box (combobox): drop down list for the user role
+    loc_lab (label): label for the location
+    location_box (combobox): drop down list for the location
+    e_lab (label): label for the email/re-enter email
+    ent_email (entry): entry field for the email
+    ent_email_two (entry): entry field for the re-entered email
+    a_lab (label): label for the affiliation
+    ent_affiliation (entry) entry field for the affiliation
+    chk_btn (checkbutton): checkbox for the Tax-Aid waiver
+    exit (button): button to close the entire program
+    clear (button): button to clear all forms
+    submit (button): button to add information to the database
+    volunteer_bttn (button): button to add information to the database
+    settings (button): button that opens admin login
+    export_bttn (button): button that exports database to .csv on desktop
     """
     # Not all of the following variables should be class level variables.
     # To future groups editing, please try to reformat
@@ -218,11 +252,11 @@ class TaxAidApp:
         self.settings.config(relief='raised')
 
         # Creates Export button
-        self.volunteer_bttn = Button(master, padx=5, pady=5, text='Export',
+        self.export_bttn = Button(master, padx=5, pady=5, text='Export',
                                      font='none 12 bold',
                                      command=self.export)
-        self.volunteer_bttn.place(relx=0.8, rely=0.4, anchor=CENTER)
-        self.volunteer_bttn.config(relief='raised')
+        self.export_bttn.place(relx=0.8, rely=0.4, anchor=CENTER)
+        self.export_bttn.config(relief='raised')
 
     def settings_login(self):
         """
@@ -269,6 +303,7 @@ class TaxAidApp:
         :return: None
         """
         # The code used for the settings page is not best practice.
+        # The staff menu should most likely be implemented in a separate class?
         # If editing (future groups), please edit syntax of the following code.
         self.top = Toplevel(TaxAidApp.root)
         # this forces all focus on the top level until Toplevel is closed
@@ -403,9 +438,9 @@ class TaxAidApp:
         TaxAidApp.names.append(whole_name)
 
         datetime.datetime.now()
-        connect = sq.connect('volunteers.db')
-        with connect:
-            point = connect.cursor()
+
+        with TaxAidApp.DB:
+            point = TaxAidApp.DB.cursor()
             point.execute("""CREATE TABLE IF NOT EXISTS volunteers(First_Name
              TEXT,Last_Name TEXT, Volunteer TEXT, Email TEXT,
              Employer_Affiliation TEXT, Date TEXT)""")
@@ -528,8 +563,7 @@ class TaxAidApp:
         desktop
         :return: None
         """
-        connect = sq.connect('volunteers.db')
-        cur = connect.cursor()
+        cur = TaxAidApp.DB.cursor()
         cur.execute("SELECT * FROM volunteers")
         data = cur.fetchall()
         with open(os.path.join(os.path.expanduser('~'), 'Desktop',
@@ -565,8 +599,7 @@ class TaxAidApp:
         a copy of the Volunteer.CSV to their drive
         :return: None
         """
-        connect = sq.connect('volunteers.db')
-        cur = connect.cursor()
+        cur = TaxAidApp.DB.cursor()
         cur.execute("SELECT * FROM volunteers")
         data = cur.fetchall()
         with open('volunteers.csv', 'w') as file:
@@ -574,6 +607,10 @@ class TaxAidApp:
             writer.writerow(['First Name', 'Last Name', 'Role', 'Email',
                              'Affiliation', 'Date'])
             writer.writerows(data)
+        # The following code is credited to Annis Souames
+        # His guide to integrating Google Drive and python through PyDrive can
+        # be found at https://medium.com/@annissouames99/
+        # how-to-upload-files-automatically-to-drive-with-python-ee19bb13dda
         g_login = GoogleAuth()
         g_login.LocalWebserverAuth()
         drive = GoogleDrive(g_login)
