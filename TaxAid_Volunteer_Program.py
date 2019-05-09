@@ -503,8 +503,9 @@ class TaxAidApp:
         Function that closes the root window and stops the program
         :return: None
         """
-        if msg.askquestion("Exit Application", "Are you sure you want to exit?\n"
-                           " All locations will be reset.") == "yes":
+        if msg.askquestion("Exit Application",
+                           "Are you sure you want to exit?\n"
+                           "All locations will be reset.") == "yes":
             TaxAidApp.DB.close()
             TaxAidApp.root.destroy()
 
@@ -559,7 +560,8 @@ class TaxAidApp:
     @staticmethod
     def drive_upload():
         """
-        Function that authorizes a user's entered google account and uploads
+        Function that creates a volunteers.csv file in the working directory,
+        authorizes a user's entered google account, and uploads
         a copy of the Volunteer.CSV to their drive
         :return: None
         """
@@ -588,8 +590,7 @@ class TaxAidApp:
         :return: None
         """
         prompt = """
-                 Please ensure you are connected to the internet.
-                 Do you have the authorized Tax-Aid google account login?
+                 Are you connected to the internet?
                  """
         answer = msg.askquestion("File Upload", prompt)
         if answer == 'yes':
